@@ -1,0 +1,3 @@
+# s-particle [![Build Status](https://travis-ci.org/Coffeekraken/s-particles-system-component.svg?branch=master)](https://travis-ci.org/Coffeekraken/s-particles-system-component)
+
+Webcomponent to handle particles emission depending on duration, amount, etc...
