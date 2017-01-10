@@ -32,7 +32,8 @@
 	"author": "Coffeekraken <hello@coffeekraken.io>",
 	"license": "MIT",
 	"dependencies": {
-		"coffeekraken-sugar": "git+https://git@github.com/Coffeekraken/sugar.git#release/0.0.1"
+		"coffeekraken-sugar": "git+https://git@github.com/Coffeekraken/sugar.git#release/0.0.1",
+		"coffeekraken-s-particle-component": "git+https://git@github.com/Coffeekraken/s-particle-component.git#release/0.0.1"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.18.0",

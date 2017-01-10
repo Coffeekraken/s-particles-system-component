@@ -10,6 +10,10 @@ var _SWebComponent2 = require('coffeekraken-sugar/js/core/SWebComponent');
 
 var _SWebComponent3 = _interopRequireDefault(_SWebComponent2);
 
+var _coffeekrakenSParticleComponent = require('coffeekraken-s-particle-component');
+
+var _coffeekrakenSParticleComponent2 = _interopRequireDefault(_coffeekrakenSParticleComponent);
+
 var _getAnimationProperties = require('coffeekraken-sugar/js/dom/getAnimationProperties');
 
 var _getAnimationProperties2 = _interopRequireDefault(_getAnimationProperties);

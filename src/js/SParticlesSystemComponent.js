@@ -1,4 +1,5 @@
 import SWebComponent from 'coffeekraken-sugar/js/core/SWebComponent'
+import SParticleComponent from 'coffeekraken-s-particle-component'
 import __getAnimationProperties from 'coffeekraken-sugar/js/dom/getAnimationProperties'
 
 export default class SParticlesSystemComponent extends SWebComponent {
