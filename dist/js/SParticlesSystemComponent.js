@@ -14,6 +14,10 @@ var _coffeekrakenSParticleComponent = require('coffeekraken-s-particle-component
 
 var _coffeekrakenSParticleComponent2 = _interopRequireDefault(_coffeekrakenSParticleComponent);
 
+var _STimer = require('coffeekraken-sugar/js/classes/STimer');
+
+var _STimer2 = _interopRequireDefault(_STimer);
+
 var _getAnimationProperties = require('coffeekraken-sugar/js/dom/getAnimationProperties');
 
 var _getAnimationProperties2 = _interopRequireDefault(_getAnimationProperties);
@@ -25,6 +29,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @name 		SParticlesSystemComponent
+ * @extends 	SWebComponent
+ * Webcomponent to handle particles emission
+ *
+ * @example 	html
+ * <s-particles-system loop spread="100" duration="1000" amount="10" particle-class="my-cool-particle">
+ * </s-particles-system>
+ *
+ * @author 		Olivier Bossel <olivier.bossel@gmail.com>
+ */
 
 var SParticlesSystemComponent = function (_SWebComponent) {
 	_inherits(SParticlesSystemComponent, _SWebComponent);
@@ -42,6 +58,7 @@ var SParticlesSystemComponent = function (_SWebComponent) {
 		/**
    * Mount component
    * @definition 		SWebComponent.componentMount
+   * @protected
    */
 		value: function componentMount() {
 			var _this2 = this;
@@ -50,7 +67,8 @@ var SParticlesSystemComponent = function (_SWebComponent) {
 
 			// check if need to create a timer or not
 			if (this.props.amount && this.props.duration) {
-				this._timer = new STimer(this.props.duration / this.props.amount, {
+				this._timer = new _STimer2.default(this.props.duration, {
+					tickCount: this.props.amount,
 					loop: this.props.loop
 				});
 				// on tick
@@ -71,6 +89,7 @@ var SParticlesSystemComponent = function (_SWebComponent) {
 		/**
    * Unmount component
    * @definition 		SWebComponent.componentUnmount
+   * @protected
    */
 
 	}, {
@@ -85,6 +104,7 @@ var SParticlesSystemComponent = function (_SWebComponent) {
 		/**
    * Component will receive prop
    * @definition 		SWebComponent.componentWillReceiveProp
+   * @protected
    */
 
 	}, {
@@ -111,8 +131,8 @@ var SParticlesSystemComponent = function (_SWebComponent) {
 			var particle = document.createElement('s-particle');
 
 			// set particle position
-			particle.style.top = this.props.emitterY + Math.random() * this.props.spread + 'px';
-			particle.style.left = this.props.emitterX + Math.random() * this.props.spread + 'px';
+			particle.style.top = this.props.emitterY - this.props.spread / 2 + Math.random() * this.props.spread + 'px';
+			particle.style.left = this.props.emitterX - this.props.spread / 2 + Math.random() * this.props.spread + 'px';
 
 			// append class if needed
 			if (this.props.particleClass) {
@@ -131,9 +151,14 @@ var SParticlesSystemComponent = function (_SWebComponent) {
 				particle.appendChild(particles[Math.round(Math.random() * particles.length - 1)]);
 			}
 
+			// before emit
+			this.props.beforeEmit && this.props.beforeEmit(particle);
+
 			this.mutate(function () {
 				// append the new particle into the system
 				_this3.appendChild(particle);
+				// onEmit
+				_this3.props.onEmit && _this3.props.onEmit(particle);
 			});
 
 			// return the emited particle
@@ -165,6 +190,7 @@ var SParticlesSystemComponent = function (_SWebComponent) {
 
 		/**
    * Css
+   * @protected
    */
 		value: function defaultCss(componentName, componentNameDash) {
 			return '\n\t\t\t' + componentNameDash + ' {\n\t\t\t\tdisplay: block;\n\t\t\t}\n\t\t';
@@ -176,6 +202,7 @@ var SParticlesSystemComponent = function (_SWebComponent) {
 		/**
    * Default props
    * @definition 		SWebComponent.defaultProps
+   * @protected
    */
 		get: function get() {
 			return {
@@ -212,13 +239,14 @@ var SParticlesSystemComponent = function (_SWebComponent) {
 				/**
      * Class to apply to each particles
      * @prop
-     * @type	{String}
+     * @type	{String|Array}
      */
 				particleClass: null,
 				/**
      * Specify the method to pick a particle class if the props.particleClass is an array. Only random is supported for now
      * @prop
      * @type 	{String|Array<String>}
+     * @values 	random
      */
 				particleClassSelection: 'random',
 				/**
@@ -233,6 +261,23 @@ var SParticlesSystemComponent = function (_SWebComponent) {
      * @type  	{Function}
      */
 				onComplete: null,
+
+				/**
+     * Called just before emit the particle
+     * The passed function will have as parameter the particle that will be emitted
+     * @prop
+     * @type 	{Function}
+     */
+				beforeEmit: null,
+
+				/**
+     * When a particle is emitted
+     * The passed function will have as parameter the emitted particle
+     * @prop
+     * @type 	{Function}
+     */
+				onEmit: null,
+
 				/**
      * Specify if the system if active or not
      * @prop

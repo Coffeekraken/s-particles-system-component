@@ -1,12 +1,26 @@
 import SWebComponent from 'coffeekraken-sugar/js/core/SWebComponent'
 import SParticleComponent from 'coffeekraken-s-particle-component'
+import STimer from 'coffeekraken-sugar/js/classes/STimer'
 import __getAnimationProperties from 'coffeekraken-sugar/js/dom/getAnimationProperties'
+
+/**
+ * @name 		SParticlesSystemComponent
+ * @extends 	SWebComponent
+ * Webcomponent to handle particles emission
+ *
+ * @example 	html
+ * <s-particles-system loop spread="100" duration="1000" amount="10" particle-class="my-cool-particle">
+ * </s-particles-system>
+ *
+ * @author 		Olivier Bossel <olivier.bossel@gmail.com>
+ */
 
 export default class SParticlesSystemComponent extends SWebComponent {
 
 	/**
 	 * Default props
 	 * @definition 		SWebComponent.defaultProps
+	 * @protected
 	 */
 	static get defaultProps() {
 		return {
@@ -43,13 +57,14 @@ export default class SParticlesSystemComponent extends SWebComponent {
 			/**
 			 * Class to apply to each particles
 			 * @prop
-			 * @type	{String}
+			 * @type	{String|Array}
 			 */
 			particleClass : null,
 			/**
 			 * Specify the method to pick a particle class if the props.particleClass is an array. Only random is supported for now
 			 * @prop
 			 * @type 	{String|Array<String>}
+			 * @values 	random
 			 */
 			particleClassSelection : 'random',
 			/**
@@ -64,6 +79,23 @@ export default class SParticlesSystemComponent extends SWebComponent {
 			 * @type  	{Function}
 			 */
 			onComplete : null,
+
+			/**
+			 * Called just before emit the particle
+			 * The passed function will have as parameter the particle that will be emitted
+			 * @prop
+			 * @type 	{Function}
+			 */
+			beforeEmit : null,
+
+			/**
+			 * When a particle is emitted
+			 * The passed function will have as parameter the emitted particle
+			 * @prop
+			 * @type 	{Function}
+			 */
+			onEmit : null,
+
 			/**
 			 * Specify if the system if active or not
 			 * @prop
@@ -81,6 +113,7 @@ export default class SParticlesSystemComponent extends SWebComponent {
 
 	/**
 	 * Css
+	 * @protected
 	 */
 	static defaultCss(componentName, componentNameDash) {
 		return `
@@ -93,13 +126,15 @@ export default class SParticlesSystemComponent extends SWebComponent {
 	/**
 	 * Mount component
 	 * @definition 		SWebComponent.componentMount
+	 * @protected
 	 */
 	componentMount() {
 		super.componentMount();
 
 		// check if need to create a timer or not
 		if (this.props.amount && this.props.duration) {
-			this._timer = new STimer(this.props.duration / this.props.amount, {
+			this._timer = new STimer(this.props.duration, {
+				tickCount : this.props.amount,
 				loop : this.props.loop
 			});
 			// on tick
@@ -120,6 +155,7 @@ export default class SParticlesSystemComponent extends SWebComponent {
 	/**
 	 * Unmount component
 	 * @definition 		SWebComponent.componentUnmount
+	 * @protected
 	 */
 	componentUnmount() {
 		super.componentUnmount();
@@ -131,6 +167,7 @@ export default class SParticlesSystemComponent extends SWebComponent {
 	/**
 	 * Component will receive prop
 	 * @definition 		SWebComponent.componentWillReceiveProp
+	 * @protected
 	 */
 	componentWillReceiveProp(name, newVal, oldVal) {
 		switch (name) {
@@ -150,8 +187,8 @@ export default class SParticlesSystemComponent extends SWebComponent {
 		const particle = document.createElement('s-particle');
 
 		// set particle position
-		particle.style.top = this.props.emitterY + Math.random() * this.props.spread + 'px';
-		particle.style.left = this.props.emitterX + Math.random() * this.props.spread + 'px';
+		particle.style.top = this.props.emitterY - this.props.spread / 2 + (Math.random() * this.props.spread) + 'px';
+		particle.style.left = this.props.emitterX - this.props.spread / 2 + (Math.random() * this.props.spread) + 'px';
 
 		// append class if needed
 		if (this.props.particleClass) {
@@ -170,9 +207,14 @@ export default class SParticlesSystemComponent extends SWebComponent {
 			particle.appendChild(particles[Math.round(Math.random()*particles.length-1)]);
 		}
 
+		// before emit
+		this.props.beforeEmit && this.props.beforeEmit(particle);
+
 		this.mutate(() => {
 			// append the new particle into the system
 			this.appendChild(particle);
+			// onEmit
+			this.props.onEmit && this.props.onEmit(particle);
 		});
 
 		// return the emited particle
