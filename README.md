@@ -5,13 +5,13 @@
 		<img src="https://img.shields.io/travis/Coffeekraken/s-particles-system-component.svg?style=flat-square" />
 	</a>
 	<a href="https://www.npmjs.com/package/coffeekraken-s-particles-system-component">
-		<img src="https://img.shields.io/npm/v/coffeekraken-s-datepicker.svg?style=flat-square" />
+		<img src="https://img.shields.io/npm/v/coffeekraken-s-particles-system-component.svg?style=flat-square" />
 	</a>
 	<a href="https://github.com/coffeekraken/s-particles-system-component/blob/master/LICENSE.txt">
-		<img src="https://img.shields.io/npm/l/coffeekraken-s-datepicker.svg?style=flat-square" />
+		<img src="https://img.shields.io/npm/l/coffeekraken-s-particles-system-component.svg?style=flat-square" />
 	</a>
 	<!-- <a href="https://github.com/coffeekraken/s-particles-system-component">
-		<img src="https://img.shields.io/npm/dt/coffeekraken-s-datepicker.svg?style=flat-square" />
+		<img src="https://img.shields.io/npm/dt/coffeekraken-s-particles-system-component.svg?style=flat-square" />
 	</a>
 	<a href="https://github.com/coffeekraken/s-particles-system-component">
 		<img src="https://img.shields.io/github/forks/coffeekraken/s-particles-system-component.svg?style=social&label=Fork&style=flat-square" />
