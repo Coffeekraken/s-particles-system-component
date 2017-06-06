@@ -1,6 +1,6 @@
 {
 	"name": "coffeekraken-s-particles-system-component",
-	"version": "0.0.2",
+	"version": "1.0.0",
 	"description": "Webcomponent to handle particles emission",
 	"main": "dist/index.js",
   "homepage": "http://coffeekraken.io",
@@ -46,8 +46,8 @@
   }],
 	"license": "MIT",
   "dependencies": {
-    "coffeekraken-sugar": "^0.0.2",
-    "coffeekraken-s-particle-component": "^0.0.2"
+    "coffeekraken-sugar": "^1.0.0",
+    "coffeekraken-s-particle-component": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
