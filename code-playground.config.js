@@ -37,11 +37,12 @@ module.exports = {
 			language : 'sass',
 			data : `
 				@import 'node_modules/coffeekraken-sugar/index';
+				@import 'node_modules/coffeekraken-s-button-component/index';
 				@include s-init();
 				@include s-classes();
 				@include s-button-classes();
 				body {
-					background : linear-gradient(to bottom, #f6f7fc 0%, #d5e1e8 40%);
+					padding: s-space(big);
 					overflow: hidden;
 				}
 				.my-cool-particle {
