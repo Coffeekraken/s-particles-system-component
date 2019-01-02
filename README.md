@@ -29,6 +29,8 @@
 
 Webcomponent to handle particles emission
 
+[![View demo](http://components.coffeekraken.io/assets/img/view-demo.png)](http://components.coffeekraken.io/app/s-particles-system-component)
+
 ## Table of content
 
 1. **[Demo](http://components.coffeekraken.io/app/s-particles-system-component)**
